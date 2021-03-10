@@ -19,7 +19,7 @@ __shell_watch_precmd() {
     # Note: ~ will resolve to $HOME in filenames
     local latest_timestamp=$(cat "${SHELL_WATCH_LIST}" \
         | sed "s#^~#${HOME}#g" \
-        | xargs -I{} date +%s -r {} 2>/dev/null \
+        | xargs -I{} date -r {} +%s 2>/dev/null \
         | sort \
         | tail -n 1)
 
