@@ -32,7 +32,7 @@ __shell_watch_precmd() {
 
         # Update timestamp
         __SHELL_WATCH_TIMESTAMP="${latest_timestamp}"
-        printf "%s\n" "${latest_timestamp}" >! "${SHELL_WATCH_TIMEFILE}"
+        printf '%s\n' "${latest_timestamp}" >! "${SHELL_WATCH_TIMEFILE}"
 
         # Run custom command or source ~/.zshrc
         if [ -s "${SHELL_WATCH_COMMAND}" ]; then
