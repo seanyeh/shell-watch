@@ -9,15 +9,18 @@ __shell_watch_precmd() {
     mkdir -p "${SHELL_WATCH_DIR}"
     [ -f "${SHELL_WATCH_TIMEFILE}" ] || touch "${SHELL_WATCH_TIMEFILE}"
 
-    # Exit if watchlist doesn't exist
-    [ -s "${SHELL_WATCH_LIST}" ] || return
+    # Load list of files to watch, defaulting to ~/.zshrc if watchlist not found
+    local shell_watch_files="~/.zshrc"
+    if [ -s "${SHELL_WATCH_LIST}" ]; then
+      shell_watch_files="$(cat "${SHELL_WATCH_LIST}")"
+    fi
 
     # Default timestamp to timestamp file
     [ -z "${__SHELL_WATCH_TIMESTAMP}" ] && __SHELL_WATCH_TIMESTAMP=$(cat "${SHELL_WATCH_TIMEFILE}")
 
     # Get timestamp of latest modified file in watchlist
     # Note: ~ will resolve to $HOME in filenames
-    local latest_timestamp=$(cat "${SHELL_WATCH_LIST}" \
+    local latest_timestamp=$(printf '%s\n' "${shell_watch_files}" \
         | sed "s#^~#${HOME}#g" \
         | xargs -I{} date -r {} +%s 2>/dev/null \
         | sort \
