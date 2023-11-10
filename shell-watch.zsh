@@ -21,7 +21,8 @@ __shell_watch_precmd() {
     # Get timestamp of latest modified file in watchlist
     # Note: ~ will resolve to $HOME in filenames
     local latest_timestamp=$(printf '%s\n' "${shell_watch_files}" \
-        | sed "s#^~#${HOME}#g" \
+        | sed '/^[ \t]*#/d' \
+        | sed 's#^~#${HOME}#g' \
         | xargs -I{} date -r {} +%s 2>/dev/null \
         | sort \
         | tail -n 1)
