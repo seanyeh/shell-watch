@@ -22,7 +22,7 @@ __shell_watch_precmd() {
     # Note: ~ will resolve to $HOME in filenames
     local latest_timestamp=$(printf '%s\n' "${shell_watch_files}" \
         | sed '/^[ \t]*#/d' \
-        | sed 's#^~#${HOME}#g' \
+        | sed 's#^~#'${HOME}'#g' \
         | xargs -I{} date -r {} +%s 2>/dev/null \
         | sort \
         | tail -n 1)
